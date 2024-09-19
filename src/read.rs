@@ -497,12 +497,6 @@ impl<R: io::Read> ChunksReader<R> {
             return Err(Error::FormatError("sample bits exceeds size of sample"));
         }
 
-        // This field is redundant, and may be ignored. We do validate it to
-        // fail early for ill-formed files.
-        if Some(n_bytes_per_sec) != (block_align as u32).checked_mul(n_samples_per_sec) {
-            return Err(Error::FormatError("inconsistent fmt chunk"));
-        }
-
         // The bits per sample for a WAVEFORMAT struct is the number of bits
         // used to store a sample. Therefore, it must be a multiple of 8.
         if bits_per_sample % 8 != 0 {
